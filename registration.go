@@ -9,14 +9,14 @@ import (
 	"strings"
 )
 
-// genClient will take the values and create a Metclient object
-func genClient(serv string, magic []byte, magicstring string, magicterm []byte, magictermstr string, regfile string, interval int, delta int, obfseed int, obftext string) Metclient {
+// GenClient will take the values and create a Metclient object
+func GenClient(serv string, magic []byte, magicstring string, magicterm []byte, magictermstr string, regfile string, interval int, delta int, obfseed int, obftext string) Metclient {
 	m := Metclient{serv, magic, magicstring, magicterm, magictermstr, regfile, interval, delta, obfseed, obftext}
 	return m
 }
 
-// preCheck will check if the client is registered with the Core, returns "registered," or the payload that will be used to register
-func preCheck(m Metclient) string {
+// PreCheck will check if the client is registered with the Core, returns "registered," or the payload that will be used to register
+func PreCheck(m Metclient) string {
 	s := checkRegStatus(m)
 	if s == true {
 		return "registered"

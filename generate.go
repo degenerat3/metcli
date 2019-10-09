@@ -7,8 +7,8 @@ import (
 	"github.com/google/uuid"
 )
 
-// genGetComPL generates the payload used to "get commands"
-func genGetComPL(m Metclient) string {
+// GenGetComPL generates the payload used to "get commands"
+func GenGetComPL(m Metclient) string {
 	uid := fetchUUID(m)
 	compayload := encodePayload(uid, "D", "0", m.magicstring, m.magictermstr)
 	return compayload

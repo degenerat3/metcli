@@ -7,7 +7,8 @@ import (
 	"strings"
 )
 
-func handleComs(comstr string, m Metclient) string {
+// HandleComs will take the commandstring blob and execute them all, then return the results encoded into a payload
+func HandleComs(comstr string, m Metclient) string {
 	comResults := parseCommands(comstr)
 	respayload := genResPL(comResults, m)
 	return respayload
