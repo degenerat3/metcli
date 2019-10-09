@@ -9,9 +9,20 @@ import (
 	"strings"
 )
 
+// genClient will take the values and create a Metclient object
 func genClient(serv string, magic []byte, magicstring string, magicterm []byte, magictermstr string, regfile string, interval int, delta int, obfseed int, obftext string) Metclient {
 	m := Metclient{serv, magic, magicstring, magicterm, magictermstr, regfile, interval, delta, obfseed, obftext}
 	return m
+}
+
+// preCheck will check if the client is registered with the Core, returns "registered," or the payload that will be used to register
+func preCheck(m Metclient) string {
+	s := checkRegStatus(m)
+	if s == true {
+		return "registered"
+	}
+	p := genRegPL(m)
+	return p
 }
 
 //get IP of default interface, which the DB will use as hostname
@@ -59,4 +70,12 @@ func deobfuscateUUID(obf string, m Metclient) string {
 	p = p[:18] + "-" + p[18:]
 	p = p[:23] + "-" + p[23:]
 	return p
+}
+
+//check if we've already registered
+func checkRegStatus(m Metclient) bool {
+	if _, err := os.Stat(m.regfile); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
