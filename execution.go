@@ -1,6 +1,7 @@
 package metcli
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"os/exec"
@@ -69,6 +70,7 @@ func execCommand(mode string, args string) string {
 	if retval == "" {
 		retval = "<No Output>"
 	}
+	retval = base64.StdEncoding.EncodeToString([]byte(retval))
 	return retval
 }
 
