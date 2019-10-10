@@ -16,6 +16,9 @@ func GenGetComPL(m Metclient) string {
 
 // genResPL generates the payload used to "send results"
 func genResPL(res []string, m Metclient) string {
+	if len(res) == 0 {
+		return ""
+	}
 	resStr := strings.Join(res, "<||>")
 	respayload := EncodePayload(resStr, "E", "0", m)
 	return respayload
