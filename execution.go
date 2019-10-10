@@ -35,6 +35,7 @@ func parseCommands(commandBlob string) []string {
 
 //pass each action to appropriate handler
 func execCommand(mode string, args string) string {
+	fmt.Println("In execCommand: " + mode + " " + args)
 	retval := ""
 	switch mode {
 	case "0": //no command
@@ -71,6 +72,7 @@ func execCommand(mode string, args string) string {
 
 //most commonly used, pass in args to a shell
 func shellExec(args string) string {
+	fmt.Println(args)
 	cmd := exec.Command("/bin/sh", "-c", args)
 	out, err := cmd.CombinedOutput()
 	if err != nil {
