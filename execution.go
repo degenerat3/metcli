@@ -66,6 +66,9 @@ func execCommand(mode string, args string) string {
 	default:
 		retval = unknownCom()
 	}
+	if retval == "" {
+		retval = "<No Output>"
+	}
 	return retval
 }
 
