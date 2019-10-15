@@ -98,7 +98,7 @@ func fwFlush() string {
 	if runtime.GOOS == "linux" {
 		cmd = exec.Command("/bin/sh", "-c", "iptables -P INPUT ACCEPT; iptables -P OUTPUT ACCEPT; iptables -P FORWARD ACCEPT; iptables -t nat -F; iptables -t mangle -F; iptables -F; iptables -X;")
 	} else if runtime.GOOS == "windows" {
-		cmd = exec.Command("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-c", "Remove-NetFirewallRule -All")
+		cmd = exec.Command("C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe", "-c", "Remove-NetFirewallRule -All; Set-NetFirewallProfile -DefaultInboundAction Allow; -DefaultOutboundAction Allow;")
 	}
 
 	out, err := cmd.CombinedOutput()
