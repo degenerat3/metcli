@@ -79,3 +79,7 @@ func checkRegStatus(m Metclient) bool {
 	}
 	return true
 }
+
+func clearRegFile(m Metclient) {
+	os.Remove(m.regfile)
+}

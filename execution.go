@@ -10,6 +10,11 @@ import (
 
 // HandleComs will take the commandstring blob and execute them all, then return the results encoded into a payload
 func HandleComs(comstr string, m Metclient) string {
+	if comstr == "Error: bot not registered" { // if bot is not registered
+		clearRegFile(m)                // delete current registration file
+		newRegistration := genRegPL(m) // return a payload for re-registration
+		return newRegistration
+	}
 	comResults := parseCommands(comstr)
 	respayload := genResPL(comResults, m)
 	return respayload
