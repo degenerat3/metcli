@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -75,9 +76,24 @@ func registerBot(payload string, m Metserver) string {
 	hn := splitPayload[3]
 
 	cli := http.Client{}
-	prejson := `{"uuid":"` + uid + `", "interval":"` + intrv + `", "delta": "` + dlt + `", "hostname": "` + hn + `"}`
-	jsonStr := []byte(prejson)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	type Registration struct {
+		UUID     string `json:"uuid"`
+		Interval string `json:"interval"`
+		Delta    string `json:"delta"`
+		Hostname string `json:"hostname"`
+	}
+
+	data := Registration{
+		UUID:     uid,
+		Interval: intrv,
+		Delta:    dlt,
+		Hostname: hn,
+	}
+	jsonReg, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonReg))
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := cli.Do(req)
 	if err != nil {
@@ -109,9 +125,18 @@ func getCommands(payload string, m Metserver) string {
 	url := m.core + "/get/command"
 	uid := payload
 	cli := http.Client{}
-	prejson := `{"uuid":"` + uid + `"}`
-	jsonStr := []byte(prejson)
-	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	type GetCom struct {
+		UUID string `json:"uuid"`
+	}
+
+	data := GetCom{
+		UUID: uid,
+	}
+	jsonGetCom, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonGetCom))
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := cli.Do(req)
 	if err != nil {
@@ -129,9 +154,20 @@ func getCommands(payload string, m Metserver) string {
 func postResult(aid string, result string, m Metserver) {
 	url := m.core + "/add/actionresult"
 	cli := http.Client{}
-	prejson := `{"actionid":"` + aid + `", "data":"` + result + `"}`
-	jsonStr := []byte(prejson)
-	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
+	type PostRes struct {
+		Actionid string `json:"actionid"`
+		Data     string `json:"data"`
+	}
+
+	data := PostRes{
+		Data:     result,
+		Actionid: aid,
+	}
+	jsonReg, err := json.Marshal(data)
+	if err != nil {
+		panic(err)
+	}
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonReg))
 	req.Header.Set("Content-Type", "application/json")
 	cli.Do(req)
 	return
