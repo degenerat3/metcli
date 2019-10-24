@@ -45,6 +45,7 @@ func encodePayload(data string, m Metserver) string {
 // HandlePayload take string of payload, depending on mode/arguments: pass to handler functions
 func HandlePayload(payload string, m Metserver) string {
 	payload = decodePayload(payload, m)
+	fmt.Println("HandlePayload decPayload: " + payload)
 	splitPayload := strings.SplitN(payload, "||", 3)
 	mode := splitPayload[0]
 	aid := splitPayload[1]
@@ -141,7 +142,7 @@ func addResult(payload string, aid string, m Metserver) string {
 	if payload == "None" {
 		return "Done"
 	}
-	fmt.Println("PAYLOAD: " + payload)
+	fmt.Println("addResult PAYLOAD: " + payload)
 	resArray := strings.Split(payload, "<||>")
 	for _, res := range resArray {
 		splitRes := strings.Split(res, ":")
