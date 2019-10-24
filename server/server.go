@@ -141,7 +141,7 @@ func addResult(payload string, aid string, m Metserver) string {
 	if payload == "None" {
 		return "Done"
 	}
-	fmt.Println(payload)
+	fmt.Println("PAYLOAD: " + payload)
 	resArray := strings.Split(payload, "<||>")
 	for _, res := range resArray {
 		splitRes := strings.Split(res, ":")
