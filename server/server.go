@@ -3,6 +3,7 @@ package server
 import (
 	"bytes"
 	"encoding/base64"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -140,6 +141,7 @@ func addResult(payload string, aid string, m Metserver) string {
 	if payload == "None" {
 		return "Done"
 	}
+	fmt.Println(payload)
 	resArray := strings.Split(payload, "<||>")
 	for _, res := range resArray {
 		splitRes := strings.Split(res, ":")
