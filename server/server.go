@@ -137,6 +137,9 @@ func postResult(aid string, result string, m Metserver) {
 
 // send the action result back to the DB for feedback tracking
 func addResult(payload string, aid string, m Metserver) string {
+	if payload == "None" {
+		return "Done"
+	}
 	resArray := strings.Split(payload, "<||>")
 	for _, res := range resArray {
 		splitRes := strings.Split(res, ":")
