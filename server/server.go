@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -152,6 +153,9 @@ func getCommands(payload string, m Metserver) string {
 
 // send the post request with actionID and result data
 func postResult(aid string, result string, m Metserver) {
+	if _, err := strconv.Atoi(aid); err != nil { // if actionID isn't an int, exit
+		return // shitty error checking but I'm just trying stuff
+	}
 	url := m.core + "/add/actionresult"
 	cli := http.Client{}
 	type PostRes struct {
